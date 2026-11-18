@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Cell Classifier</title>
+<meta name="description" content="Upload a microscopy slide image to classify it as cancerous or non-cancerous. Research prototype." />
+<meta name="theme-color" content="#0E7C86" />
+<link rel="manifest" href="/manifest.webmanifest" />
+<link rel="icon" type="image/svg+xml" href="/static/icon.svg" />
+<link rel="apple-touch-icon" href="/static/icon-192.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F6F7F5; --panel: #FFFFFF; --ink: #101B2B; --muted: #5B6773; --line: #DEE3E3;
+    --teal: #0E7C86; --teal-hover: #0B646D; --teal-dim: #E4F1F0;
+    --alert: #B8402A; --alert-dim: #F8E9E4; --safe: #2E7D53; --safe-dim: #E5F1E8;
+    --radius: 10px; --tap: 48px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0D141C; --panel: #141E29; --ink: #E7ECEF; --muted: #93A1AD; --line: #24323F;
+      --teal: #2BA6B0; --teal-hover: #3BBAC4; --teal-dim: #12313A;
+      --alert: #F08A70; --alert-dim: #3A1F19; --safe: #6CC793; --safe-dim: #15301F;
+    }
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  [hidden] { display: none !important; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif; line-height: 1.5;
+    min-height: 100vh; min-height: 100dvh;
+  }
+  .wrap {
+    max-width: 1040px; margin: 0 auto;
+    padding: max(20px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right))
+             max(32px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  }
+  header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 15px; }
+  .brand img { width: 28px; height: 28px; }
+  .status { display: inline-flex; align-items: center; gap: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+  .dot.ok { background: var(--safe); } .dot.bad { background: var(--alert); }
+  .dot.wait { background: #D3A13A; animation: pulse 1s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: .3; } }
+
+  .eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--teal); margin: 8px 0 10px; }
+  h1 { font-family: 'Fraunces', serif; font-weight: 500; font-style: italic; font-size: clamp(28px, 6vw, 40px); line-height: 1.15; margin: 0 0 10px; letter-spacing: -.01em; }
+  .sub { color: var(--muted); font-size: 15px; max-width: 56ch; margin: 0 0 24px; }
+
+  .grid { display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr); }
+  .grid > * { min-width: 0; }
+  .stack { display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr); }
+  .stack > * { min-width: 0; }
+  .meter-label span { white-space: nowrap; }
+  @media (max-width: 360px) { .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } .stats .stat:last-child { grid-column: 1 / -1; } }
+  @media (min-width: 880px) { .grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); align-items: start; } }
+
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; }
+
+  /* Specimen slide drop zone */
+  .slide {
+    position: relative; border: 1.5px dashed var(--line); border-radius: 8px;
+    min-height: clamp(220px, 45vw, 340px); display: flex; align-items: center; justify-content: center;
+    cursor: pointer; overflow: hidden;
+    background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 24px 24px; background-position: center; transition: border-color .15s ease;
+  }
+  .slide:focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; }
+  .slide.dragover { border-color: var(--teal); border-style: solid; }
+  .corner { position: absolute; width: 20px; height: 20px; border: 2px solid var(--teal); pointer-events: none; }
+  .c1 { top: 10px; left: 10px; border-right: 0; border-bottom: 0; } .c2 { top: 10px; right: 10px; border-left: 0; border-bottom: 0; }
+  .c3 { bottom: 10px; left: 10px; border-right: 0; border-top: 0; } .c4 { bottom: 10px; right: 10px; border-left: 0; border-top: 0; }
+  .slide-msg { text-align: center; padding: 24px; background: color-mix(in srgb, var(--panel) 88%, transparent); border-radius: 8px; }
+  .slide-msg .main { font-weight: 500; margin: 0 0 4px; }
+  .slide-msg .hint { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); margin: 0; overflow-wrap: anywhere; }
+  .slide img { max-width: 100%; max-height: clamp(220px, 45vw, 340px); object-fit: contain; display: block; }
+  .drag-only { display: none; } @media (hover: hover) and (pointer: fine) { .drag-only { display: inline; } }
+
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  button { font: inherit; font-size: 15px; font-weight: 500; min-height: var(--tap); padding: 0 18px; border-radius: 8px; cursor: pointer; border: 1px solid transparent; touch-action: manipulation; }
+  button:focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; }
+  .primary { background: var(--teal); color: #fff; flex: 1 1 180px; }
+  .primary:hover:not(:disabled) { background: var(--teal-hover); }
+  .primary:disabled { opacity: .45; cursor: not-allowed; }
+  .secondary { background: transparent; color: var(--ink); border-color: var(--line); flex: 1 1 140px; }
+  .secondary:hover { border-color: var(--teal); }
+  .only-touch { display: none; } @media (pointer: coarse) { .only-touch { display: inline-flex; align-items: center; justify-content: center; } }
+  input[type=file] { display: none; }
+  .fileinfo { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); margin-top: 10px; min-height: 18px; word-break: break-all; }
+
+  .progress { display: none; margin-top: 14px; } .progress.show { display: block; }
+  .progress-label { display: flex; justify-content: space-between; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+  .track { height: 6px; background: var(--bg); border: 1px solid var(--line); border-radius: 999px; overflow: hidden; position: relative; }
+  .fill { height: 100%; width: 0; background: var(--teal); transition: width .2s ease; }
+  .fill.indeterminate { width: 35%; animation: slide 1.1s ease-in-out infinite; }
+  @keyframes slide { from { transform: translateX(-100%); } to { transform: translateX(300%); } }
+
+  .error { display: none; margin-top: 14px; background: var(--alert-dim); color: var(--alert); border-radius: 8px; padding: 12px 14px; font-size: 14px; }
+  .error.show { display: block; }
+
+  /* Result */
+  .placeholder { color: var(--muted); font-size: 14px; text-align: center; padding: 28px 8px; }
+  .result { display: none; } .result.show { display: block; }
+  .result-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; margin-bottom: 14px; }
+  .result-label { font-family: 'Fraunces', serif; font-size: clamp(24px, 5vw, 30px); font-weight: 600; margin: 0; }
+  .cancerous { color: var(--alert); } .non_cancerous { color: var(--safe); }
+  .badge { font-family: 'IBM Plex Mono', monospace; font-size: 12px; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+  .badge.cancerous { background: var(--alert-dim); } .badge.non_cancerous { background: var(--safe-dim); }
+  .meter-label { display: flex; justify-content: space-between; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); }
+  .meter { position: relative; height: 12px; border-radius: 999px; margin: 6px 0 4px; background: linear-gradient(90deg, var(--safe-dim), var(--alert-dim)); border: 1px solid var(--line); }
+  .meter .marker { position: absolute; top: -5px; width: 4px; height: 20px; border-radius: 2px; background: var(--ink); transform: translateX(-50%); transition: left .5s ease; }
+  .meter .thr { position: absolute; top: -3px; bottom: -3px; width: 0; border-left: 2px dashed var(--muted); }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 16px 0; }
+  .stat { background: var(--bg); border-radius: 8px; padding: 10px; }
+  .stat .k { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+  .stat .v { font-family: 'IBM Plex Mono', monospace; font-size: 16px; font-weight: 500; }
+  .explainer { font-size: 14px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 12px; margin: 0; }
+
+  .history h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 0 0 8px; font-weight: 600; }
+  .history ul { list-style: none; margin: 0; padding: 0; }
+  .history li { display: flex; justify-content: space-between; gap: 10px; padding: 10px 0; border-top: 1px solid var(--line); font-size: 13px; }
+  .history li span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+  .history li span:last-child { font-family: 'IBM Plex Mono', monospace; white-space: nowrap; }
+  .history .empty { color: var(--muted); font-size: 13px; }
+
+  footer { margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); }
+  footer strong { color: var(--ink); }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand"><img src="/static/icon.svg" alt="" />Cell Classifier</div>
+    <div class="status" role="status" aria-live="polite"><span class="dot wait" id="dot"></span><span id="statusText">Connecting…</span></div>
+  </header>
+
+  <p class="eyebrow">Slide analysis</p>
+  <h1>Upload a cell image</h1>
+  <p class="sub">Choose or photograph a microscope slide image. The model flags it as cancerous or non‑cancerous, with a probability score.</p>
+
+  <div class="grid">
+    <section class="card" aria-label="Upload">
+      <div class="slide" id="dropZone" tabindex="0" role="button" aria-label="Choose an image to analyze">
+        <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+        <div class="slide-msg" id="slideMsg">
+          <p class="main">Tap to choose an image<span class="drag-only"> or drag it here</span></p>
+          <p class="hint" id="limitsHint">JPG · PNG · TIF</p>
+        </div>
+        <img id="preview" alt="Selected slide preview" hidden />
+      </div>
+      <input type="file" id="fileInput" accept="image/*,.tif,.tiff" />
+      <input type="file" id="cameraInput" accept="image/*" capture="environment" />
+
+      <div class="fileinfo" id="fileInfo"></div>
+      <div class="actions">
+        <button class="secondary only-touch" id="cameraBtn" type="button">Take photo</button>
+        <button class="secondary" id="clearBtn" type="button" hidden>Clear</button>
+        <button class="primary" id="analyzeBtn" type="button" disabled>Analyze slide</button>
+      </div>
+
+      <div class="progress" id="progress" aria-live="polite">
+        <div class="progress-label"><span id="progressText">Uploading…</span><span id="progressPct"></span></div>
+        <div class="track"><div class="fill" id="progressFill"></div></div>
+      </div>
+      <div class="error" id="errorBox" role="alert"></div>
+    </section>
+
+    <div class="stack">
+      <section class="card" aria-label="Result" aria-live="polite">
+        <div class="placeholder" id="placeholder">Results appear here.</div>
+        <div class="result" id="result">
+          <div class="result-head">
+            <p class="result-label" id="resultLabel"></p>
+            <span class="badge" id="resultBadge"></span>
+          </div>
+          <div class="meter-label"><span>Non‑cancerous</span><span>Cancerous</span></div>
+          <div class="meter" aria-hidden="true"><span class="thr" id="thrLine"></span><span class="marker" id="marker"></span></div>
+          <div class="meter-label"><span>0%</span><span id="thrLabel"></span><span>100%</span></div>
+          <div class="stats">
+            <div class="stat"><div class="k">P(cancer)</div><div class="v" id="sProb">–</div></div>
+            <div class="stat"><div class="k">Confidence</div><div class="v" id="sConf">–</div></div>
+            <div class="stat"><div class="k">Time</div><div class="v" id="sTime">–</div></div>
+          </div>
+          <p class="explainer" id="explainer"></p>
+        </div>
+      </section>
+
+      <section class="card history" aria-label="Recent analyses">
+        <h2>This session</h2>
+        <ul id="historyList"><li class="empty">No analyses yet.</li></ul>
+      </section>
+    </div>
+  </div>
+
+  <footer>
+    <strong>Research prototype, not a diagnosis.</strong> Trained on a small set of slides and can be wrong.
+    Any result — especially a cancerous flag — must be confirmed by a qualified pathologist before it informs a medical decision.
+    Images are processed in memory and not stored.
+  </footer>
+</div>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const ALLOWED = ['.jpg', '.jpeg', '.png', '.tif', '.tiff', '.bmp'];
+  let maxMB = 100, selected = null, busy = false;
+  const history = [];
+
+  const ext = (n) => { const i = n.lastIndexOf('.'); return i < 0 ? '' : n.slice(i).toLowerCase(); };
+  const isTiff = (n) => ['.tif', '.tiff'].includes(ext(n));
+  const fmtMB = (b) => (b / 1048576).toFixed(b < 10485760 ? 2 : 1) + ' MB';
+
+  function setStatus(state, text) { $('dot').className = 'dot ' + state; $('statusText').textContent = text; }
+
+  // Server status + limits. Free hosts sleep when idle; first request may take ~1 min.
+  async function checkHealth(attempt = 0) {
+    try {
+      const r = await fetch('/api/info', { cache: 'no-store' });
+      if (!r.ok) throw new Error();
+      const info = await r.json();
+      maxMB = info.max_upload_mb;
+      if (!selected) $('limitsHint').textContent = `JPG · PNG · TIF — up to ${maxMB} MB`;
+      setStatus('ok', 'Model ready');
+    } catch {
+      setStatus(attempt < 20 ? 'wait' : 'bad', attempt < 20 ? 'Waking server…' : 'Server unavailable');
+      if (attempt < 20) setTimeout(() => checkHealth(attempt + 1), 3000);
+    }
+  }
+
+  function showError(msg) { $('errorBox').textContent = msg; $('errorBox').classList.add('show'); }
+  function hideError() { $('errorBox').classList.remove('show'); }
+
+  function handleFile(file) {
+    if (!file) return;
+    hideError();
+    if (!file.type.startsWith('image/') && !ALLOWED.includes(ext(file.name))) {
+      return showError("That file doesn't look like an image. Please choose a JPG, PNG or TIF.");
+    }
+    if (file.size > maxMB * 1048576) {
+      return showError(`This file is ${fmtMB(file.size)}; the limit is ${maxMB} MB.`);
+    }
+    selected = file;
+    const img = $('preview');
+    if (img.src.startsWith('blob:')) URL.revokeObjectURL(img.src);
+    if (isTiff(file.name)) {
+      img.hidden = true;
+      $('slideMsg').hidden = false;
+      $('slideMsg').querySelector('.main').textContent = 'TIF loaded';
+      $('limitsHint').textContent = 'Browsers can’t preview TIF, but it will still be analyzed.';
+    } else {
+      img.src = URL.createObjectURL(file);
+      img.hidden = false;
+      $('slideMsg').hidden = true;
+    }
+    $('fileInfo').textContent = `${file.name} · ${fmtMB(file.size)}`;
+    $('analyzeBtn').disabled = false;
+    $('clearBtn').hidden = false;
+  }
+
+  function reset() {
+    selected = null;
+    $('fileInput').value = ''; $('cameraInput').value = '';
+    const img = $('preview'); if (img.src.startsWith('blob:')) URL.revokeObjectURL(img.src);
+    img.hidden = true; img.removeAttribute('src');
+    $('slideMsg').hidden = false;
+    $('slideMsg').querySelector('.main').innerHTML = 'Tap to choose an image<span class="drag-only"> or drag it here</span>';
+    $('limitsHint').textContent = `JPG · PNG · TIF — up to ${maxMB} MB`;
+    $('fileInfo').textContent = '';
+    $('analyzeBtn').disabled = true; $('clearBtn').hidden = true;
+    hideError();
+  }
+
+  function setProgress(show, text, pct) {
+    $('progress').classList.toggle('show', show);
+    if (!show) return;
+    $('progressText').textContent = text;
+    $('progressPct').textContent = pct == null ? '' : pct + '%';
+    $('progressFill').classList.toggle('indeterminate', pct == null);
+    $('progressFill').style.width = pct == null ? '' : pct + '%';
+  }
+
+  // XHR (not fetch) so we can show upload progress for large TIFs on mobile data.
+  function upload(file) {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', '/api/predict');
+      xhr.timeout = 300000;
+      xhr.upload.onprogress = (e) => {
+        if (!e.lengthComputable) return;
+        const pct = Math.round((e.loaded / e.total) * 100);
+        pct < 100 ? setProgress(true, 'Uploading…', pct) : setProgress(true, 'Analyzing…', null);
+      };
+      xhr.onload = () => {
+        let data = {};
+        try { data = JSON.parse(xhr.responseText); } catch {}
+        xhr.status >= 200 && xhr.status < 300 ? resolve(data)
+          : reject(new Error(data.error || `Server error (${xhr.status}).`));
+      };
+      xhr.onerror = () => reject(new Error("Couldn't reach the server. Check your connection and try again."));
+      xhr.ontimeout = () => reject(new Error('The server took too long to respond. Try a smaller image.'));
+      const fd = new FormData(); fd.append('file', file, file.name || 'photo.jpg');
+      xhr.send(fd);
+    });
+  }
+
+  async function analyze() {
+    if (!selected || busy) return;
+    busy = true; hideError();
+    $('analyzeBtn').disabled = true; $('analyzeBtn').textContent = 'Analyzing…';
+    setProgress(true, 'Uploading…', 0);
+    try {
+      const data = await upload(selected);
+      render(data);
+      addHistory(selected.name, data);
+      if (window.matchMedia('(max-width: 879px)').matches) $('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (e) {
+      showError(e.message);
+    } finally {
+      busy = false; setProgress(false);
+      $('analyzeBtn').disabled = !selected; $('analyzeBtn').textContent = 'Analyze slide';
+    }
+  }
+
+  function render(d) {
+    const cls = d.is_cancerous ? 'cancerous' : 'non_cancerous';
+    $('placeholder').hidden = true;
+    $('resultLabel').textContent = d.is_cancerous ? 'Cancerous' : 'Non‑cancerous';
+    $('resultLabel').className = 'result-label ' + cls;
+    $('resultBadge').textContent = d.is_cancerous ? 'Flagged for review' : 'Not flagged';
+    $('resultBadge').className = 'badge ' + cls;
+    $('marker').style.left = d.prob_cancerous + '%';
+    $('thrLine').style.left = d.threshold + '%';
+    $('thrLabel').textContent = `threshold ${d.threshold}%`;
+    $('sProb').textContent = d.prob_cancerous + '%';
+    $('sConf').textContent = d.confidence + '%';
+    $('sTime').textContent = d.processing_ms >= 1000 ? (d.processing_ms / 1000).toFixed(1) + ' s' : d.processing_ms + ' ms';
+    const unsure = d.confidence < 70 ? ' The score is close to the threshold, so the model is uncertain about this slide.' : '';
+    $('explainer').textContent = (d.is_cancerous
+      ? 'Patterns in this image resemble the cancerous slides the model was trained on. Treat this as a prompt for expert review, not a diagnosis.'
+      : 'Patterns in this image resemble the non‑cancerous slides the model was trained on. This is not a guarantee — when in doubt, get it checked.') + unsure;
+    $('result').classList.add('show');
+  }
+
+  function addHistory(name, d) {
+    history.unshift({ name, d });
+    const ul = $('historyList'); ul.innerHTML = '';
+    history.slice(0, 8).forEach(({ name, d }) => {
+      const li = document.createElement('li');
+      const a = document.createElement('span'); a.textContent = name; a.title = name;
+      const b = document.createElement('span');
+      b.textContent = `${d.is_cancerous ? 'Cancerous' : 'Non‑cancerous'} · ${d.prob_cancerous}%`;
+      b.className = d.is_cancerous ? 'cancerous' : 'non_cancerous';
+      li.append(a, b); ul.append(li);
+    });
+  }
+
+  const dz = $('dropZone');
+  dz.addEventListener('click', () => $('fileInput').click());
+  dz.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); $('fileInput').click(); } });
+  dz.addEventListener('dragover', (e) => { e.preventDefault(); dz.classList.add('dragover'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
+  dz.addEventListener('drop', (e) => { e.preventDefault(); dz.classList.remove('dragover'); handleFile(e.dataTransfer.files[0]); });
+  $('fileInput').addEventListener('change', (e) => handleFile(e.target.files[0]));
+  $('cameraInput').addEventListener('change', (e) => handleFile(e.target.files[0]));
+  $('cameraBtn').addEventListener('click', () => $('cameraInput').click());
+  $('clearBtn').addEventListener('click', reset);
+  $('analyzeBtn').addEventListener('click', analyze);
+  document.addEventListener('paste', (e) => { const f = [...(e.clipboardData?.files || [])][0]; if (f) handleFile(f); });
+
+  checkHealth();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# Environments
+.venv/
+venv/
+.env
+
+# Data: medical images are large and may be sensitive — never commit them
+data/raw/
+data/processed/
+*.zip
+*.tif
+*.tiff
+
+# Model experiments (only models/cell_classifier.h5 is shipped)
+models/*candidate*
+models/_cv_tmp*
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

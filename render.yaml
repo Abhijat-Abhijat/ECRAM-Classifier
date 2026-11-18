@@ -1,0 +1,28 @@
+# Render Blueprint for the backend API (free web service, built from ./Dockerfile).
+# Render dashboard -> New -> Blueprint -> pick this GitHub repo -> Apply.
+# Deploys are triggered by GitHub Actions (.github/workflows/ci.yml) only after tests pass,
+# so autoDeploy is off here.
+services:
+  - type: web
+    name: cell-classifier-api
+    runtime: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    autoDeploy: false
+    envVars:
+      # Free instances have 512 MB RAM. A decoded image needs ~3 bytes/pixel, so cap uploads at
+      # 40 megapixels (~120 MB). Larger whole-slide TIFFs work in the in-browser UI (GitHub Pages).
+      - key: MAX_IMAGE_PIXELS
+        value: "40000000"
+      - key: MAX_UPLOAD_MB
+        value: "50"
+      - key: CANCER_THRESHOLD
+        value: "0.5"
+      # Free instances have 0.1 CPU - one ONNX Runtime thread avoids oversubscription.
+      - key: ORT_THREADS
+        value: "1"
+      - key: CORS_ORIGINS
+        value: "*"

@@ -1,0 +1,24 @@
+{
+  "app_version": "1.0.0",
+  "source_model": "cell_classifier.h5",
+  "source_sha256": "17d1fc55ec6ab3bd4cf7c8f12fd613b88d9ba06e7dc5116d9d954db94a652951",
+  "onnx_file": "cell_classifier.onnx",
+  "sha256": "729ae16ddfd0d077affea91ca372e3e0331f7f47a5301d8f5de2456cb2c2603f",
+  "input": {
+    "name": "image",
+    "shape": [
+      1,
+      224,
+      224,
+      3
+    ],
+    "dtype": "float32",
+    "preprocessing": "RGB, nearest-neighbour resize (Pillow NEAREST sampling), divide by 255"
+  },
+  "output": {
+    "name": "prob_cancerous",
+    "meaning": "P(cancerous)"
+  },
+  "threshold": 0.5,
+  "max_abs_diff_vs_keras": 6.377696990966797e-06
+}

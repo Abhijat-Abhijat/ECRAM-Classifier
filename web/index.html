@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Cell Classifier</title>
+<meta name="description" content="Classify a microscopy slide image as cancerous or non-cancerous. Runs entirely in your browser. Research prototype." />
+<meta name="theme-color" content="#0E7C86" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" type="image/svg+xml" href="icon.svg" />
+<link rel="apple-touch-icon" href="icon-192.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand"><img src="icon.svg" alt="" />Cell Classifier</div>
+    <div class="status" role="status" aria-live="polite"><span class="dot wait" id="dot"></span><span id="statusText">Loading model…</span></div>
+  </header>
+
+  <p class="eyebrow">Slide analysis</p>
+  <h1>Upload a cell image</h1>
+  <p class="sub">Choose or photograph a microscope slide image. The model flags it as cancerous or non‑cancerous, with a probability score.</p>
+  <p class="privacy">🔒 Runs on this device. Your image is never uploaded.</p>
+
+  <div class="grid">
+    <section class="card" aria-label="Image">
+      <div class="slide" id="dropZone" tabindex="0" role="button" aria-label="Choose an image to analyze">
+        <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+        <div class="slide-msg" id="slideMsg">
+          <p class="main" id="slideMain">Tap to choose an image<span class="drag-only"> or drag it here</span></p>
+          <p class="hint" id="limitsHint">JPG · PNG · TIF (including whole‑slide TIFFs)</p>
+        </div>
+        <img id="preview" alt="Selected slide preview" hidden />
+      </div>
+      <input type="file" id="fileInput" accept="image/*,.tif,.tiff" />
+      <input type="file" id="cameraInput" accept="image/*" capture="environment" />
+
+      <div class="fileinfo" id="fileInfo"></div>
+      <div class="actions">
+        <button class="secondary only-touch" id="cameraBtn" type="button">Take photo</button>
+        <button class="secondary" id="clearBtn" type="button" hidden>Clear</button>
+        <button class="primary" id="analyzeBtn" type="button" disabled>Analyze slide</button>
+      </div>
+
+      <div class="progress" id="progress" aria-live="polite">
+        <div class="progress-label"><span id="progressText">Reading image…</span><span id="progressPct"></span></div>
+        <div class="track"><div class="fill" id="progressFill"></div></div>
+      </div>
+      <div class="error" id="errorBox" role="alert"></div>
+    </section>
+
+    <div class="stack">
+      <section class="card" aria-label="Result" aria-live="polite">
+        <div class="placeholder" id="placeholder">Results appear here.</div>
+        <div class="result" id="result">
+          <div class="result-head">
+            <p class="result-label" id="resultLabel"></p>
+            <span class="badge" id="resultBadge"></span>
+          </div>
+          <div class="meter-label"><span>Non‑cancerous</span><span>Cancerous</span></div>
+          <div class="meter" aria-hidden="true"><span class="thr" id="thrLine"></span><span class="marker" id="marker"></span></div>
+          <div class="meter-label"><span>0%</span><span id="thrLabel"></span><span>100%</span></div>
+          <div class="stats">
+            <div class="stat"><div class="k">P(cancer)</div><div class="v" id="sProb">–</div></div>
+            <div class="stat"><div class="k">Confidence</div><div class="v" id="sConf">–</div></div>
+            <div class="stat"><div class="k">Time</div><div class="v" id="sTime">–</div></div>
+          </div>
+          <p class="explainer" id="explainer"></p>
+          <p class="kind" id="kind"></p>
+        </div>
+      </section>
+
+      <section class="card history" aria-label="Recent analyses">
+        <h2>This session</h2>
+        <ul id="historyList"><li class="empty">No analyses yet.</li></ul>
+      </section>
+    </div>
+  </div>
+
+  <footer>
+    <strong>Research prototype, not a diagnosis.</strong> Trained on a small set of slides and performs close to chance on new cases.
+    Any result, especially a cancerous flag, must be confirmed by a qualified pathologist before it informs a medical decision.
+    The model runs inside your browser, so no image is sent to any server.
+  </footer>
+</div>
+
+<script src="vendor/ort/ort.wasm.min.js"></script>
+<script src="imaging.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

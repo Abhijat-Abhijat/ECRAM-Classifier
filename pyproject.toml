@@ -1,0 +1,16 @@
+[project]
+name = "cell-classifier"
+version = "1.0.0"
+description = "Cancerous vs. non-cancerous microscopy slide classifier (MobileNetV2) with a FastAPI web app."
+readme = "README.md"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "tests"]
+markers = ["slow: loads the real TensorFlow model (deselect with -m 'not slow')"]
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.ruff]
+line-length = 120
+src = ["src", "scripts", "tests"]

@@ -1,0 +1,21 @@
+# Only src/, web/model/cell_classifier.onnx and requirements.txt are needed in the image
+.venv/
+venv/
+data/
+reports/
+tests/
+docs/
+scripts/
+models/
+web/*
+!web/model/
+web/model/*
+!web/model/cell_classifier.onnx
+**/__pycache__/
+**/*.pyc
+.pytest_cache/
+*.zip
+.git/
+.github/
+.vscode/
+.idea/

@@ -1,0 +1,16 @@
+# Normalise line endings (the repo is edited on Windows, built on Linux)
+* text=auto eol=lf
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+
+# Binary files - never diff or convert. They are stored as ordinary git objects, NOT Git LFS:
+# all are < 25 MB (GitHub's limit is 100 MB) and GitHub's free LFS quota (1 GB bandwidth/month)
+# would be used up by CI checkouts. Hugging Face uploads (scripts/deploy_hf.py) handle large
+# files themselves.
+*.h5 binary
+*.keras binary
+*.onnx binary
+*.wasm binary
+*.png binary
+*.jpg binary
+*.ico binary

@@ -1,0 +1,140 @@
+# CI/CD for Cell Classifier - everything runs on free tiers.
+#
+#   every push / PR : test (pytest + headless-Chrome browser parity) and docker (build + smoke test)
+#   push to main    : deploy-ui   -> GitHub Pages   (static in-browser app from web/)
+#                     deploy-api  -> Render         (FastAPI backend, via deploy hook)
+#                     deploy-hf   -> Hugging Face   (optional mirror of the static app)
+#
+# One-time setup (see docs/GITHUB_DEPLOY.md):
+#   Settings -> Pages -> Source: "GitHub Actions"                       (UI)
+#   Secret   RENDER_DEPLOY_HOOK_URL, variable API_URL                   (backend, optional)
+#   Secret   HF_TOKEN, variable HF_SPACE                                (HF mirror, optional)
+#   Variable DEPLOY_PAGES = false   to switch the Pages deploy off
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:          # "Run workflow" button: re-deploy without a new commit
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements*.txt
+      - run: pip install -r requirements-dev.txt
+      # data/ is never committed, so data-dependent tests skip automatically. Both model
+      # backends (Keras .h5 and ONNX) are tested and must agree with each other.
+      - run: python -m pytest -v
+      # Runs the real static web app in the runner's headless Chrome on synthetic
+      # TIFF/PNG/BMP cases and checks pixel-exact parity with the Python pipeline.
+      - run: python tests/web/browser_parity.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-parity
+          path: reports/browser_parity.json
+
+  docker:
+    # Builds exactly the image Render will build, then calls it like a user would.
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t cell-classifier .
+      - name: Smoke test (health, info, predict, memory)
+        run: |
+          docker run -d --name app -p 7860:7860 -m 512m -e ORT_THREADS=1 \
+            -e MAX_IMAGE_PIXELS=40000000 cell-classifier
+          for i in $(seq 1 60); do curl -fsS localhost:7860/health && break; sleep 2; done
+          echo; curl -fsS localhost:7860/api/info; echo
+          python3 -c "import zlib,struct
+          w=h=300; raw=b''.join(b'\0'+bytes([(x*7+y*3)%256 for x in range(w) for _ in range(3)]) for y in range(h))
+          c=lambda t,d: struct.pack('>I',len(d))+t+d+struct.pack('>I',zlib.crc32(t+d))
+          open('t.png','wb').write(b'\x89PNG\r\n\x1a\n'+c(b'IHDR',struct.pack('>IIBBBBB',w,h,8,2,0,0,0))+c(b'IDAT',zlib.compress(raw))+c(b'IEND',b''))"
+          curl -fsS -F "file=@t.png;type=image/png" localhost:7860/api/predict | tee r.json; echo
+          grep -q '"label"' r.json
+          docker stats --no-stream app
+          docker logs app
+
+  deploy-ui:
+    needs: [test, docker]
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && vars.DEPLOY_PAGES != 'false'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    concurrency:
+      group: deploy-pages
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: web
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
+  deploy-api:
+    needs: [test, docker]
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    concurrency:
+      group: deploy-render
+      cancel-in-progress: false
+    env:
+      HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+      API_URL: ${{ vars.API_URL }}
+    steps:
+      - name: Trigger Render deploy
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "::notice::RENDER_DEPLOY_HOOK_URL secret not set - backend deploy skipped"; exit 0; fi
+          curl -fsS -X POST "$HOOK"; echo
+      - name: Wait until the new commit is live
+        if: env.API_URL != ''
+        run: |
+          [ -z "$HOOK" ] && exit 0
+          # Free instances build in ~3-6 min and sleep when idle; poll /health for this commit.
+          for i in $(seq 1 120); do
+            body=$(curl -fsS --max-time 60 "$API_URL/health" || true)
+            echo "$(date +%T) $body"
+            case "$body" in
+              *"$GITHUB_SHA"*) echo "Deployed $GITHUB_SHA to $API_URL"; exit 0;;
+              *'"commit":null'*) echo "::warning::API is up but does not report its commit - cannot confirm the new version"; exit 0;;
+            esac
+            sleep 10
+          done
+          echo "::error::$API_URL did not report commit $GITHUB_SHA within 20 minutes - check the Render dashboard logs"
+          exit 1
+
+  deploy-hf:
+    needs: [test]
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && vars.HF_SPACE != ''
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install "huggingface_hub>=0.34"
+      - run: python scripts/deploy_hf.py --space "${{ vars.HF_SPACE }}" --token "${{ secrets.HF_TOKEN }}"

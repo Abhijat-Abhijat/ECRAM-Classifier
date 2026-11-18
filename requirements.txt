@@ -1,0 +1,10 @@
+# Runtime (serving) dependencies - used by the Docker image (Render / any Docker host).
+# The server runs the ONNX export of the model with ONNX Runtime: no TensorFlow, ~150 MB RAM,
+# so it fits free 512 MB instances. Training/evaluation deps live in requirements-dev.txt.
+# Resolved and verified for linux x86_64 / Python 3.12.
+onnxruntime==1.32.0
+numpy==2.5.5
+pillow==13.0.0
+fastapi==0.163.2
+uvicorn==0.54.0
+python-multipart==0.0.34
