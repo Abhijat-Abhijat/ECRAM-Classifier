@@ -1,0 +1,48 @@
+{
+  "folds": [
+    {
+      "fold": 1,
+      "n_val": 44,
+      "accuracy": 0.6363636363636364,
+      "roc_auc": 0.6540178571428572
+    },
+    {
+      "fold": 2,
+      "n_val": 48,
+      "accuracy": 0.5625,
+      "roc_auc": 0.759765625
+    },
+    {
+      "fold": 3,
+      "n_val": 49,
+      "accuracy": 0.7142857142857143,
+      "roc_auc": 0.8272058823529411
+    },
+    {
+      "fold": 4,
+      "n_val": 48,
+      "accuracy": 0.7708333333333334,
+      "roc_auc": 0.8359375
+    },
+    {
+      "fold": 5,
+      "n_val": 46,
+      "accuracy": 0.782608695652174,
+      "roc_auc": 0.8451612903225806
+    }
+  ],
+  "mean_accuracy": 0.6933182759269716,
+  "std_accuracy": 0.08340053828967384,
+  "mean_roc_auc": 0.7844176309636758,
+  "std_roc_auc": 0.07181468641626916,
+  "pooled_accuracy": 0.6936170212765957,
+  "pooled_roc_auc": 0.7605645161290324,
+  "settings": {
+    "cv": true,
+    "folds": 5,
+    "epochs": 20,
+    "fine_tune_epochs": 15,
+    "batch_size": 16,
+    "seed": 42
+  }
+}

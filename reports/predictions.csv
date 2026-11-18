@@ -1,0 +1,238 @@
+file,true_label,prob_cancerous,predicted,correct,subset
+cancerous/1744173517119cawi-EC165.png,cancerous,0.4386,non_cancerous,False,holdout_clean
+cancerous/1744173517119cawi-EC165.tif,cancerous,0.9338,cancerous,True,holdout_clean
+cancerous/1744173671059t28r-EC167.png,cancerous,0.2812,non_cancerous,False,holdout_clean
+cancerous/1744173671059t28r-EC167.tif,cancerous,0.8633,cancerous,True,holdout_clean
+cancerous/1744174029695y4mj-EC236.png,cancerous,0.4893,non_cancerous,False,holdout_leaked_or_conflict
+cancerous/1744174029695y4mj-EC236.tif,cancerous,0.5644,cancerous,True,holdout_leaked_or_conflict
+cancerous/1744174085216cbn7-EC242.png,cancerous,0.4453,non_cancerous,False,holdout_leaked_or_conflict
+cancerous/1744174085216cbn7-EC242.tif,cancerous,0.4987,non_cancerous,False,holdout_leaked_or_conflict
+cancerous/1744174150419fqqv-EC243.png,cancerous,0.7007,cancerous,True,holdout_leaked_or_conflict
+cancerous/1744174150419fqqv-EC243.tif,cancerous,0.5722,cancerous,True,holdout_leaked_or_conflict
+cancerous/17441741737636s0f-EC245.png,cancerous,0.5031,cancerous,True,holdout_leaked_or_conflict
+cancerous/17441741737636s0f-EC245.tif,cancerous,0.2579,non_cancerous,False,holdout_leaked_or_conflict
+cancerous/17441741900474jkb-EC24623.png,cancerous,0.3985,non_cancerous,False,holdout_clean
+cancerous/17441741900474jkb-EC24623.tif,cancerous,0.8957,cancerous,True,holdout_clean
+cancerous/1744174255755kuvo-EC25223.png,cancerous,0.6399,cancerous,True,holdout_leaked_or_conflict
+cancerous/1744174255755kuvo-EC25223.tif,cancerous,0.6180,cancerous,True,holdout_leaked_or_conflict
+cancerous/1744174275808s62n-EC246.png,cancerous,0.1408,non_cancerous,False,holdout_leaked_or_conflict
+cancerous/1744174275808s62n-EC246.tif,cancerous,0.8752,cancerous,True,holdout_leaked_or_conflict
+cancerous/17441743006988wm6-EC24923.png,cancerous,0.2664,non_cancerous,False,holdout_leaked_or_conflict
+cancerous/17441743006988wm6-EC24923.tif,cancerous,0.6042,cancerous,True,holdout_leaked_or_conflict
+cancerous/17441743728813kuc-EC183.png,cancerous,0.2042,non_cancerous,False,holdout_leaked_or_conflict
+cancerous/17441743728813kuc-EC183.tif,cancerous,0.7363,cancerous,True,holdout_leaked_or_conflict
+cancerous/17441744598574f0f-EC184.png,cancerous,0.4997,non_cancerous,False,holdout_clean
+cancerous/17441744598574f0f-EC184.tif,cancerous,0.8521,cancerous,True,holdout_clean
+cancerous/1744174514374279m-EC180.png,cancerous,0.2074,non_cancerous,False,holdout_leaked_or_conflict
+cancerous/1744174514374279m-EC180.tif,cancerous,0.7503,cancerous,True,holdout_leaked_or_conflict
+cancerous/1744174542222j31m-EC185.png,cancerous,0.3317,non_cancerous,False,holdout_leaked_or_conflict
+cancerous/1744174542222j31m-EC185.tif,cancerous,0.9057,cancerous,True,holdout_leaked_or_conflict
+cancerous/1744174588706eu7h-EC181.tif,cancerous,0.7913,cancerous,True,holdout_clean
+cancerous/1744174673688lsmo-EC177.png,cancerous,0.4159,non_cancerous,False,holdout_clean
+cancerous/1744174673688lsmo-EC177.tif,cancerous,0.8058,cancerous,True,holdout_clean
+cancerous/1744174729537yjrr-EC176.png,cancerous,0.7846,cancerous,True,train
+cancerous/1744174729537yjrr-EC176.tif,cancerous,0.9713,cancerous,True,train
+cancerous/1744174778779o6jd-EC174.png,cancerous,0.8816,cancerous,True,train
+cancerous/1744174778779o6jd-EC174.tif,cancerous,0.7477,cancerous,True,train
+cancerous/1744174806466ltwt-EC172.png,cancerous,0.8046,cancerous,True,train
+cancerous/1744174806466ltwt-EC172.tif,cancerous,0.9345,cancerous,True,train
+cancerous/1744175056726t7gk-EC229.png,cancerous,0.5958,cancerous,True,train
+cancerous/1744175056726t7gk-EC229.tif,cancerous,0.5582,cancerous,True,train
+cancerous/1744175093215tyrl-EC150.png,cancerous,0.0852,non_cancerous,False,train
+cancerous/1744175093215tyrl-EC150.tif,cancerous,0.5962,cancerous,True,train
+cancerous/17441751452576hmv-EC153.png,cancerous,0.8223,cancerous,True,train
+cancerous/17441751452576hmv-EC153.tif,cancerous,0.9325,cancerous,True,train
+cancerous/1744175174685psme-EC151.png,cancerous,0.7182,cancerous,True,train
+cancerous/1744175174685psme-EC151.tif,cancerous,0.8939,cancerous,True,train
+cancerous/1744175205240c862-EC152.png,cancerous,0.3925,non_cancerous,False,train
+cancerous/1744175205240c862-EC152.tif,cancerous,0.8708,cancerous,True,train
+cancerous/1744175281634gfve-EC158.png,cancerous,0.6060,cancerous,True,train
+cancerous/1744175281634gfve-EC158.tif,cancerous,0.8661,cancerous,True,train
+cancerous/1744175323079z12a-EC157.png,cancerous,0.3139,non_cancerous,False,train
+cancerous/1744175323079z12a-EC157.tif,cancerous,0.9094,cancerous,True,train
+cancerous/17441753710736bde-EC159.png,cancerous,0.7270,cancerous,True,train
+cancerous/17441753710736bde-EC159.tif,cancerous,0.9144,cancerous,True,train
+cancerous/17441754158513wnn-EC160.png,cancerous,0.6440,cancerous,True,train
+cancerous/17441754158513wnn-EC160.tif,cancerous,0.9292,cancerous,True,train
+cancerous/1744175493133v0om-EC171.png,cancerous,0.7765,cancerous,True,train
+cancerous/1744175493133v0om-EC171.tif,cancerous,0.9214,cancerous,True,train
+cancerous/1744175587000dj2v-EC144.png,cancerous,0.3603,non_cancerous,False,train
+cancerous/1744175587000dj2v-EC144.tif,cancerous,0.6386,cancerous,True,train
+cancerous/1744175608030ygwm-EC146.png,cancerous,0.4226,non_cancerous,False,train
+cancerous/1744175608030ygwm-EC146.tif,cancerous,0.9528,cancerous,True,train
+cancerous/17441756528160mgx-EC147.png,cancerous,0.8701,cancerous,True,train
+cancerous/17441756528160mgx-EC147.tif,cancerous,0.9196,cancerous,True,train
+cancerous/251 23 10X.tif,cancerous,0.8095,cancerous,True,train
+cancerous/EC 110 10X 2.tif,cancerous,0.9689,cancerous,True,train
+cancerous/EC 110 10X.tif,cancerous,0.9065,cancerous,True,train
+cancerous/EC 116 10X 2.tif,cancerous,0.9093,cancerous,True,train
+cancerous/EC 116 10X.tif,cancerous,0.9374,cancerous,True,train
+cancerous/EC 123 10X 2.tif,cancerous,0.5513,cancerous,True,train
+cancerous/EC 123 10X.tif,cancerous,0.9374,cancerous,True,train
+cancerous/EC 124 10X.tif,cancerous,0.9601,cancerous,True,train
+cancerous/EC 125 10X 2.tif,cancerous,0.9284,cancerous,True,train
+cancerous/EC 125 10X.tif,cancerous,0.8005,cancerous,True,train
+cancerous/EC 135 10X.tif,cancerous,0.3399,non_cancerous,False,train
+cancerous/EC 220 10X 2.tif,cancerous,0.7762,cancerous,True,train
+cancerous/EC 220 10X.tif,cancerous,0.9304,cancerous,True,train
+cancerous/EC 229 10X.tif,cancerous,0.1622,non_cancerous,False,train
+cancerous/EC 238 10X.tif,cancerous,0.9214,cancerous,True,train
+cancerous/EC 239 10X.tif,cancerous,0.2000,non_cancerous,False,train
+cancerous/EC 241 10X 2.tif,cancerous,0.9173,cancerous,True,train
+cancerous/EC 241 10X.tif,cancerous,0.9649,cancerous,True,train
+cancerous/EC 242 10X.tif,cancerous,0.6543,cancerous,True,train
+cancerous/EC 243 10X 2.tif,cancerous,0.8520,cancerous,True,train
+cancerous/EC 243 10X.tif,cancerous,0.9697,cancerous,True,train
+cancerous/EC 244 10 X 2.tif,cancerous,0.9676,cancerous,True,train
+cancerous/EC 244 10 X 3.tif,cancerous,0.7558,cancerous,True,train
+cancerous/EC 244 10 X.tif,cancerous,0.9581,cancerous,True,train
+cancerous/EC 246 10X 2.tif,cancerous,0.7215,cancerous,True,train
+cancerous/EC 246 10X.tif,cancerous,0.8424,cancerous,True,train
+cancerous/EC 248 10 X 2.tif,cancerous,0.9902,cancerous,True,train
+cancerous/EC 248 10 X.tif,cancerous,0.9930,cancerous,True,train
+cancerous/EC 249 23 10X.tif,cancerous,0.9823,cancerous,True,train
+cancerous/EC 250 10 X 2.tif,cancerous,0.7381,cancerous,True,train
+cancerous/EC 250 10 X.tif,cancerous,0.7323,cancerous,True,train
+cancerous/EC 250 23 10 X 2.tif,cancerous,0.4584,non_cancerous,False,train
+cancerous/EC 250 23 10 X.tif,cancerous,0.5219,cancerous,True,train
+cancerous/EC 251 10X.tif,cancerous,0.6237,cancerous,True,train
+cancerous/EC 254 23 10X 2.tif,cancerous,0.8432,cancerous,True,train
+cancerous/EC 254 23 10X.tif,cancerous,0.8937,cancerous,True,train
+cancerous/EC 259 25 10X 2.tif,cancerous,0.9495,cancerous,True,train
+cancerous/EC 259 25 10X.tif,cancerous,0.6001,cancerous,True,train
+cancerous/EC 88 10X.tif,cancerous,0.8294,cancerous,True,train
+cancerous/EC 90 10 X 3.tif,cancerous,0.9033,cancerous,True,train
+cancerous/EC 90 10X 2.tif,cancerous,0.7916,cancerous,True,train
+cancerous/EC 90 10X.tif,cancerous,0.5443,cancerous,True,train
+cancerous/EC 91 10X 2.tif,cancerous,0.2556,non_cancerous,False,train
+cancerous/EC 91 10X 3.tif,cancerous,0.5558,cancerous,True,train
+cancerous/EC 91 10X.tif,cancerous,0.6896,cancerous,True,train
+cancerous/EC.tif,cancerous,0.7331,cancerous,True,train
+cancerous/EC102 10X.tif,cancerous,0.9189,cancerous,True,train
+cancerous/EC103 10X 2.tif,cancerous,0.5721,cancerous,True,train
+cancerous/EC103 10X.tif,cancerous,0.7432,cancerous,True,train
+cancerous/EC117 10X 2.tif,cancerous,0.8829,cancerous,True,train
+cancerous/EC117 10X 3.tif,cancerous,0.9458,cancerous,True,train
+cancerous/EC117 10X.tif,cancerous,0.9472,cancerous,True,train
+cancerous/EC119 10X.tif,cancerous,0.5795,cancerous,True,train
+cancerous/EC119 10x 2.tif,cancerous,0.7402,cancerous,True,train
+cancerous/EC119 10x 3.tif,cancerous,0.6180,cancerous,True,train
+cancerous/EC120 10X.tif,cancerous,0.9556,cancerous,True,train
+cancerous/EC126 10X.tif,cancerous,0.9505,cancerous,True,train
+cancerous/EC135 10X.tif,cancerous,0.9585,cancerous,True,train
+cancerous/EC222 10X 2.tif,cancerous,0.8772,cancerous,True,train
+cancerous/EC222 10X.tif,cancerous,0.8554,cancerous,True,train
+cancerous/EC227 10X 2.tif,cancerous,0.9737,cancerous,True,train
+cancerous/EC227 10X 3.tif,cancerous,0.9488,cancerous,True,train
+cancerous/EC227 10X.tif,cancerous,0.9748,cancerous,True,train
+cancerous/EC230 10X 2.tif,cancerous,0.9247,cancerous,True,train
+cancerous/EC230 10X.tif,cancerous,0.9558,cancerous,True,train
+cancerous/EC236 10X.tif,cancerous,0.7383,cancerous,True,train
+cancerous/EC236 10X.tif 2.tif,cancerous,0.9832,cancerous,True,train
+cancerous/EC236 10X.tif 3.tif,cancerous,0.6632,cancerous,True,train
+cancerous/EC236 10X.tif 4.tif,cancerous,0.9916,cancerous,True,train
+cancerous/EC241 10X.tif,cancerous,0.7553,cancerous,True,train
+cancerous/EC251 23 10X 2.tif,cancerous,0.4892,non_cancerous,False,train
+cancerous/EC25223 10X 2.tif,cancerous,0.9578,cancerous,True,train
+cancerous/EC25223 10X.tif,cancerous,0.9370,cancerous,True,train
+cancerous/EC2522310X 3.tif,cancerous,0.4773,non_cancerous,False,train
+cancerous/EC253 23 10X 2.tif,cancerous,0.6040,cancerous,True,train
+cancerous/EC253 23 10X.tif,cancerous,0.9819,cancerous,True,train
+cancerous/EC257 25 10X 2.tif,cancerous,0.8687,cancerous,True,train
+cancerous/EC257 25 10X 3.tif,cancerous,0.8265,cancerous,True,train
+cancerous/EC257 25 10X.tif,cancerous,0.9569,cancerous,True,train
+cancerous/EC258 25 10X 3.tif,cancerous,0.8128,cancerous,True,train
+cancerous/EC258 25 10X.tif,cancerous,0.4077,non_cancerous,False,train
+cancerous/EC25923 10 X 2.tif,cancerous,0.9417,cancerous,True,train
+cancerous/EC25923 10X.tif,cancerous,0.9499,cancerous,True,train
+cancerous/EC92 10x.tif,cancerous,0.8429,cancerous,True,train
+cancerous/EC93 10X 3.tif,cancerous,0.9207,cancerous,True,train
+cancerous/EC93 10x 2.tif,cancerous,0.9518,cancerous,True,train
+cancerous/EC9310x.tif,cancerous,0.4423,non_cancerous,False,train
+cancerous/EC96 10X.tif,cancerous,0.9643,cancerous,True,train
+cancerous/EC98 10X 2.tif,cancerous,0.9867,cancerous,True,train
+cancerous/EC98 10X.tif,cancerous,0.9730,cancerous,True,train
+cancerous/EN 133 10X.tif,cancerous,0.9632,cancerous,True,train
+cancerous/EN 257 23 10X 2.tif,cancerous,0.1606,non_cancerous,False,train
+cancerous/ec119 10x 4.tif,cancerous,0.8387,cancerous,True,train
+non_cancerous/1744173958397vv95-EC254.png,non_cancerous,0.7560,cancerous,False,holdout_clean
+non_cancerous/1744173958397vv95-EC254.tif,non_cancerous,0.5422,cancerous,False,holdout_clean
+non_cancerous/1744174058855uzsa-EC329.png,non_cancerous,0.2652,non_cancerous,True,holdout_clean
+non_cancerous/1744174058855uzsa-EC329.tif,non_cancerous,0.5522,cancerous,False,holdout_clean
+non_cancerous/1744175876271ws05-EN229.png,non_cancerous,0.7101,cancerous,False,holdout_leaked_or_conflict
+non_cancerous/1744175876271ws05-EN229.tif,non_cancerous,0.4998,non_cancerous,True,holdout_leaked_or_conflict
+non_cancerous/17441759297558c00-EN154.png,non_cancerous,0.2307,non_cancerous,True,holdout_clean
+non_cancerous/17441759297558c00-EN154.tif,non_cancerous,0.7611,cancerous,False,holdout_clean
+non_cancerous/1744176005056h9o0-EN156.png,non_cancerous,0.1690,non_cancerous,True,holdout_clean
+non_cancerous/1744176005056h9o0-EN156.tif,non_cancerous,0.5202,cancerous,False,holdout_clean
+non_cancerous/1744176026868r8th-EN170.png,non_cancerous,0.6534,cancerous,False,holdout_clean
+non_cancerous/1744176026868r8th-EN170.tif,non_cancerous,0.5068,cancerous,False,holdout_clean
+non_cancerous/17441760570385kmo-EN168.png,non_cancerous,0.3913,non_cancerous,True,holdout_clean
+non_cancerous/17441760570385kmo-EN168.tif,non_cancerous,0.8572,cancerous,False,holdout_clean
+non_cancerous/17441762043762mdp-EN176.png,non_cancerous,0.3282,non_cancerous,True,holdout_leaked_or_conflict
+non_cancerous/17441762043762mdp-EN176.tif,non_cancerous,0.4040,non_cancerous,True,holdout_leaked_or_conflict
+non_cancerous/1744176356595p80k-EN179.png,non_cancerous,0.1559,non_cancerous,True,train
+non_cancerous/1744176356595p80k-EN179.tif,non_cancerous,0.2580,non_cancerous,True,train
+non_cancerous/1744176424088ccjg-EN178.png,non_cancerous,0.1497,non_cancerous,True,train
+non_cancerous/1744176424088ccjg-EN178.tif,non_cancerous,0.6434,cancerous,False,train
+non_cancerous/1744176524385ojhx-EN180.png,non_cancerous,0.1526,non_cancerous,True,train
+non_cancerous/1744176524385ojhx-EN180.tif,non_cancerous,0.7137,cancerous,False,train
+non_cancerous/17441765550218bh3-EN142.png,non_cancerous,0.1989,non_cancerous,True,train
+non_cancerous/17441765550218bh3-EN142.tif,non_cancerous,0.6729,cancerous,False,train
+non_cancerous/1744176619694e45a-EN145.png,non_cancerous,0.0986,non_cancerous,True,train
+non_cancerous/1744176619694e45a-EN145.tif,non_cancerous,0.7022,cancerous,False,train
+non_cancerous/17441766448900u4a-EN147.png,non_cancerous,0.4077,non_cancerous,True,train
+non_cancerous/17441766448900u4a-EN147.tif,non_cancerous,0.7862,cancerous,False,train
+non_cancerous/1744176681943u3u3-EN185.png,non_cancerous,0.4455,non_cancerous,True,train
+non_cancerous/1744176681943u3u3-EN185.tif,non_cancerous,0.8726,cancerous,False,train
+non_cancerous/1744176704510z0d2-EN183.png,non_cancerous,0.1303,non_cancerous,True,train
+non_cancerous/1744176704510z0d2-EN183.tif,non_cancerous,0.7584,cancerous,False,train
+non_cancerous/1744176734537b2ec-EN245.png,non_cancerous,0.0945,non_cancerous,True,train
+non_cancerous/1744176734537b2ec-EN245.tif,non_cancerous,0.1443,non_cancerous,True,train
+non_cancerous/1744176782867wgp5-EN25323.png,non_cancerous,0.1324,non_cancerous,True,train
+non_cancerous/1744176782867wgp5-EN25323.tif,non_cancerous,0.2531,non_cancerous,True,train
+non_cancerous/1744176800395qzho-EN25023.png,non_cancerous,0.2881,non_cancerous,True,train
+non_cancerous/1744176800395qzho-EN25023.tif,non_cancerous,0.2672,non_cancerous,True,train
+non_cancerous/1744176818010pakr-EN250.png,non_cancerous,0.1912,non_cancerous,True,train
+non_cancerous/1744176818010pakr-EN250.tif,non_cancerous,0.3905,non_cancerous,True,train
+non_cancerous/1744176860844ipqt-EN244.png,non_cancerous,0.3632,non_cancerous,True,train
+non_cancerous/1744176860844ipqt-EN244.tif,non_cancerous,0.5973,cancerous,False,train
+non_cancerous/17441768852999xhk-EN242.png,non_cancerous,0.0783,non_cancerous,True,train
+non_cancerous/17441768852999xhk-EN242.tif,non_cancerous,0.3498,non_cancerous,True,train
+non_cancerous/1744176905245398z-EN241.png,non_cancerous,0.0237,non_cancerous,True,train
+non_cancerous/1744176905245398z-EN241.tif,non_cancerous,0.1242,non_cancerous,True,train
+non_cancerous/1744176929324djpg-EN238.png,non_cancerous,0.1040,non_cancerous,True,train
+non_cancerous/1744176929324djpg-EN238.tif,non_cancerous,0.0636,non_cancerous,True,train
+non_cancerous/17441769438431tmg-EN236.png,non_cancerous,0.1354,non_cancerous,True,train
+non_cancerous/17441769438431tmg-EN236.tif,non_cancerous,0.2270,non_cancerous,True,train
+non_cancerous/EN 120 10X 2.tif,non_cancerous,0.4881,non_cancerous,True,train
+non_cancerous/EN 120 10X.tif,non_cancerous,0.3764,non_cancerous,True,train
+non_cancerous/EN 120 N10X 2.tif,non_cancerous,0.2435,non_cancerous,True,train
+non_cancerous/EN 121 10X.tif,non_cancerous,0.0432,non_cancerous,True,train
+non_cancerous/EN 123 10X.tif,non_cancerous,0.0842,non_cancerous,True,train
+non_cancerous/EN 124 10X.tif,non_cancerous,0.8892,cancerous,False,train
+non_cancerous/EN 125 10X.tif,non_cancerous,0.5749,cancerous,False,train
+non_cancerous/EN 139 10X.tif,non_cancerous,0.0348,non_cancerous,True,train
+non_cancerous/EN 222 10X.tif,non_cancerous,0.0473,non_cancerous,True,train
+non_cancerous/EN 229 10X 2.tif,non_cancerous,0.5433,cancerous,False,train
+non_cancerous/EN 229 10X.tif,non_cancerous,0.1649,non_cancerous,True,train
+non_cancerous/EN 242 10X 2.tif,non_cancerous,0.2709,non_cancerous,True,train
+non_cancerous/EN 246 10X.tif,non_cancerous,0.3860,non_cancerous,True,train
+non_cancerous/EN 257 23 10X 2.tif,non_cancerous,0.1606,non_cancerous,True,train
+non_cancerous/EN 257 23 10X.tif,non_cancerous,0.1974,non_cancerous,True,train
+non_cancerous/EN 88 10X.tif,non_cancerous,0.0670,non_cancerous,True,train
+non_cancerous/EN 90 10X.tif,non_cancerous,0.2783,non_cancerous,True,train
+non_cancerous/EN 90 20X.tif,non_cancerous,0.3464,non_cancerous,True,train
+non_cancerous/EN 92 10X 2.tif,non_cancerous,0.0780,non_cancerous,True,train
+non_cancerous/EN 92 10X.tif,non_cancerous,0.1693,non_cancerous,True,train
+non_cancerous/EN 93 10X.tif,non_cancerous,0.1057,non_cancerous,True,train
+non_cancerous/EN 93 EC PRT 10X.tif,non_cancerous,0.1858,non_cancerous,True,train
+non_cancerous/EN 98 10X 2.tif,non_cancerous,0.0979,non_cancerous,True,train
+non_cancerous/EN 98 10X.tif,non_cancerous,0.0231,non_cancerous,True,train
+non_cancerous/EN103 10X.tif,non_cancerous,0.0398,non_cancerous,True,train
+non_cancerous/EN123 10X.tif,non_cancerous,0.4961,non_cancerous,True,train
+non_cancerous/EN242 10X.tif,non_cancerous,0.2832,non_cancerous,True,train
+non_cancerous/EN249 23 10X.tif,non_cancerous,0.8940,cancerous,False,train
+non_cancerous/EN251 10X.tif,non_cancerous,0.6660,cancerous,False,train
+non_cancerous/EN253 23 10X.tif,non_cancerous,0.3420,non_cancerous,True,train
+non_cancerous/ec92 10X 2.tif,non_cancerous,0.7286,cancerous,False,train
